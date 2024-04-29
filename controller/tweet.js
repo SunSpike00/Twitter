@@ -1,4 +1,15 @@
 import * as tweetRepository from "../data/tweet.js";
+import { body, param, validationResult } from "express-validator";
+
+const validate = (req, res, next) => {
+    const errors = validationResult(req);
+    if(errors.isEmpty()){
+        return next();
+    }
+
+    console.log(errors.array());
+    return res.status(400).json({message: errors.array()[0].msg});
+}
 
 // 여러 트윗을 가져오는 함수
 export async function getTweets(req, res){
@@ -24,6 +35,8 @@ export async function getTweet(req, res, next) {
 
 // 트윗을 생성하는 함수
 export async function createTweet(req, res, next) {
+    [body('text').trim().isLength({min:3}).withMessage('최소 3글자 이상 입력!'), validate]
+
     const {text, name, username} = req.body;
     const data = await tweetRepository.create(text, name, username);
 
