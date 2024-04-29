@@ -6,7 +6,7 @@ import { validate } from "../middleware/validator.js";
 const router = express.Router();
 
 /*
-    Post, Put에 text에 대해 빈문자열을 ㅇ벗애고, 최소 3자 이상 입력하여 데이터를 저장하도록 API에 적용
+    Post, Put에 text에 대해 빈문자열을 없애고, 최소 3자 이상 입력하여 데이터를 저장하도록 API에 적용
 */
 
 const validateTweet = [
