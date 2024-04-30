@@ -17,4 +17,6 @@ router.post('/signup', validateSignup, authController.signup);
 // http://localhost:8080/auth/login
 router.post('/login', authController.login);
 
+router.get('/me', authController.verify);
+
 export default router;
