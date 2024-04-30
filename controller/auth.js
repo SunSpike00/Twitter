@@ -8,7 +8,7 @@ export async function getUser(req, res, next){
     if(data){
         res.status(200).json(data);
     } else {
-        res.status(404).json({message: `${username}의 트윗이 없습니다.`})
+        res.status(404).json({message: `${username}이 없습니다.`})
     }
 }
 
@@ -22,7 +22,7 @@ export async function login(req, res, next){
     if(user){
         res.status(200).json(user);
     } else {
-        res.status(404).json({message: `${username}의 트윗이 없습니다.`})
+        res.status(404).json({message: `${username}이 없습니다.`})
     }
 }
 
