@@ -1,34 +1,24 @@
 import * as authRepository from "../data/auth.js";
 
-// 아이디로 회원정보 찾는 컨트롤러
-export async function getUser(req, res, next){
-    const username = req.params.username;
-
-    const data = await authRepository.getUser(username);
-    if(data){
-        res.status(200).json(data);
-    } else {
-        res.status(404).json({message: `${username}이 없습니다.`})
-    }
-}
-
 // 로그인 컨트롤러
 export async function login(req, res, next){
     const { username, password } = req.body;
 
-    console.log(username, password);
-    const user = await authRepository.login(username, password)
+    const user = await authRepository.login(username)
 
     if(user){
-        res.status(200).json(user);
+        res.status(200).json({message: `${username} 로그인 완료`});
     } else {
-        res.status(404).json({message: `${username}이 없습니다.`})
+        res.status(404).json({message: `${username}님 아이디 또는 비밀번호 확인하세요`})
     }
 }
 
 // 회원가입 컨트롤러
-export async function regist(req, res, next){
+export async function signup(req, res, next){
     const { username, password, name, email } = req.body;
-    const user = await authRepository.regist(username, password, name, email)
-    res.status(200).json(user);
+    const users = await authRepository.createUser(username, password, name, email)
+
+    if(users){
+        res.status(200).json(users);
+    }
 }

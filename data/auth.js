@@ -8,22 +8,10 @@ let users = [{
     }
 ]
 
-// 아이디로 회원정보 찾기
-export async function getUser(username){
-    return users.filter((user) => user.username == username);
-}
-
-// 로그인 시도하기
-export async function login(username, password){
-    return users.filter((user) => user.username == username && user.password == password)
-}
-
 // 회원가입 데이터 등록
-export async function regist(username, password, name, email){
-    const input_id = 2;
-
+export async function createUser(username, password, name, email){
     const user = {
-        id: input_id,
+        id: 10,
         username,
         password,
         name,
@@ -32,6 +20,11 @@ export async function regist(username, password, name, email){
     }
 
     users = [user, ...users];
+    return users
+}
 
-    return users.filter((user) => user.username == username && user.password == password)
+// 로그인 시도하기
+export async function login(username) {
+    const user = users.find((user) => user.username === username)
+    return user;
 }
