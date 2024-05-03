@@ -41,7 +41,7 @@ export async function create(text, name, username){
         text: text,
         createdAt: Date.now().toString(),
         name: name,   // name: name => key 값하고 value 값하고 모두 동일하면 한 번만 사용
-        usrname: username,
+        username: username,
         url: 'https://www.logoyogo.com/web/wp-content/uploads/edd/2021/06/logoyogo-1-109.jpg'
     }
 

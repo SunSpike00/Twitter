@@ -3,10 +3,8 @@ import * as tweetRepository from "../data/tweet.js";
 // 여러 트윗을 가져오는 함수
 export async function getTweets(req, res){
     const username = req.query.username;
-
     // url에 있고 없고 차이
     const data = await (username ? tweetRepository.getAllByUsername(username) : tweetRepository.getAll());
-
     res.status(200).json(data);
 }
 
