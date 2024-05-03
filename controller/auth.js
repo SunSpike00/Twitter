@@ -1,11 +1,7 @@
 import * as authRepository from "../data/auth.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { token } from "morgan";
-
-const secretKey = "abcd1234%^&*"
-const jwtExpiresInDays = '2d';
-const bcryptSaltRounds = 10;
+import { config } from '../config.js';
 
 // async function makeToken(id){
 //     const token = jsonwebtoken.sign(
@@ -20,7 +16,7 @@ const bcryptSaltRounds = 10;
 // }
 
 function createJwtToken(id){
-    return jwt.sign({id}, secretKey, {expiresIn: jwtExpiresInDays});
+    return jwt.sign({id}, config.jwt.secretKey, {expiresIn: config.jwt.expiresInSec});
 }
 
 // 회원가입 컨트롤러
@@ -30,7 +26,7 @@ export async function signup(req, res, next){
     if(found){
         return res.status(409).json({message: `${username}이 이미 있습니다.`});
     }
-    const hashed = await bcrypt.hash(password, bcryptSaltRounds);
+    const hashed = await bcrypt.hash(password, config.bcrypt.saltRounds);
     const users = await authRepository.createUser({username, hashed, name, email, url})
     const token = createJwtToken(users);
     res.status(200).json({token, username});
