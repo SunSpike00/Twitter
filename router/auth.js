@@ -11,7 +11,7 @@ const validateLogin = [
     body('password').trim().isLength({min:4}).withMessage('password는 최소 4자 이상 입력하세요'),
     validate
 ];
-
+  
 const validateSignup = [
     ... validateLogin,
     body('name').trim().notEmpty().withMessage('name을 입력하세요'),
