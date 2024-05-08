@@ -1,42 +1,29 @@
-import * as authRepository from "../data/auth.js";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import * as authRepository from '../data/auth.js';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import { config } from '../config.js';
-
-// async function makeToken(id){
-//     const token = jsonwebtoken.sign(
-//         {
-//             id: id,
-//             isAdmin: false
-//         }, 
-//         secret,
-//         { expiresIn: "1h"}
-//     )
-//     return token;
-// }
 
 function createJwtToken(id){
     return jwt.sign({id}, config.jwt.secretKey, {expiresIn: config.jwt.expiresInSec});
 }
 
-// 회원가입 컨트롤러
 export async function signup(req, res, next){
-    const { username, password, name, email, url} = req.body;
+    const {username, password, name, email, url} = req.body;
     const found = await authRepository.findByUsername(username);
     if(found){
-        return res.status(409).json({message: `${username}이 이미 있습니다.`});
+        return res.status(409).json({message:`${username}이 이미 있습니다`});
     }
     const hashed = await bcrypt.hash(password, config.bcrypt.saltRounds);
-    const users = await authRepository.createUser({username, hashed, name, email, url})
-    const token = createJwtToken(users);
-    res.status(200).json({token, username});
+    const userId = await authRepository.createUser({username, hashed, name, email, url});
+    const token = createJwtToken(userId);
+    res.status(201).json({token, username});
 }
 
-// 로그인 컨트롤러
 export async function login(req, res, next){
-    const { username, password } = req.body;
-    // const user = await authRepository.login(username, password)
+    const {username, password} = req.body;
+    // const user = await authRepository.login(username);
     const user = await authRepository.findByUsername(username);
+    console.log(user);
     if(!user){
         return res.status(401).json({message: `아이디를 찾을 수 없음`});
     }
@@ -57,8 +44,9 @@ export async function login(req, res, next){
 
 export async function me(req, res, next){
     const user = await authRepository.findById(req.userId);
+    console.log(user);
     if(!user){
-        return res.status(404).json({message: '일치하는 사용자가 없음'});
+        return res.status(404).json({message: `일치하는 사용자가 없음`});
     }
     res.status(200).json({token: req.token, username: user.username});
 }

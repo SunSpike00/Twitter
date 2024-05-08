@@ -1,40 +1,28 @@
-let users = [{
-        id: '1',
-        username: 'apple',
-        password: '$2b$10$HVKLerZD3Wf0yC6QBgAiKe/SCor.3cwi0vb/RUvmkk8MDWorYnbaW',
-        name: '김사과',
-        email: 'apple@naver',
-        url: 'https://www.logoyogo.com/web/wp-content/uploads/edd/2021/02/logoyogo-1-45-966x1024.jpg'
-    },
-    {
-        id: '2',
-        username: 'banana',
-        password: '$2b$10$HVKLerZD3Wf0yC6QBgAiKe/SCor.3cwi0vb/RUvmkk8MDWorYnbaW',
-        name: '반하나',
-        email: 'banana@banana.com',
-        url: 'https://www.logoyogo.com/web/wp-content/uploads/edd/2021/02/logoyogo-1-45-966x1024.jpg'
-    }
-]
+import { db } from '../db/database.js';
 
 // 아이디(username) 중복검사
 export async function findByUsername(username){
-    return users.find((user) => user.username === username)
+    return db.execute('select * from users where username = ?', [username]).then((result) => {
+        console.log(result);
+        return result[0][0];
+    });
 }
-
 // id 중복검사
 export async function findById(id){
-    return users.find((user) => user.id === id);
+    return db.execute('select * from users where id = ?', [id]).then((result) => {
+        console.log(result);
+        return result[0][0];
+    });
 }
-
-// 회원가입 데이터 등록
 export async function createUser(user){
-    const created = {id:'10', ...user}
-    users.push(created)
-    return created.username;
+    console.log(user);
+    const {username, hashed, name, email, url} = user;
+    return db.execute('insert into users (username, password, name, email, url) values (?, ?, ?, ?, ?)', [username, hashed, name, email, url]).then((result) => {
+        console.log(result);    // result[0].insertId
+        return result[0].insertId;
+    });
 }
-
-// 로그인 시도하기
-export async function login(username) {
-    const user = users.find((user) => user.username === username)
-    return user;
-}
+// export async function login(username){
+//     const user = users.find((user) => user.username === username)
+//     return user;
+// }
