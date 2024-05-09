@@ -4,7 +4,7 @@ import tweetsRouter from './router/tweets.js';
 import authRouter from './router/auth.js';
 import bodyParser from 'body-parser';
 import { config } from "./config.js";
-import { db } from './db/database.js';
+import { sequelize } from "./db/database.js";
 
 const app = express();
 app.use(bodyParser.urlencoded({extended: true}))
@@ -19,5 +19,6 @@ app.use('/auth', authRouter);
 //     res.sendStatus(404);
 // });
 
-// db.getConnection().then(connection => console.log(connection));
-app.listen(config.host.port);
+sequelize.sync().then(() => {
+    app.listen(config.host.port);
+})
