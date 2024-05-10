@@ -26,7 +26,7 @@ export async function create(text, userId){
 };
 
 export async function update(id, text){
-    return getTweets().findOneAndUpdate({_id: new ObjectID(id)}, {$set: {text}}, {ReturnDocument: 'after'}).then((result) => result).then(mapOptionalTweet);
+    return getTweets().findOneAndUpdate({_id: new ObjectID(id)}, {$set: {text}}, {returnDocument:'after'}).then((result) => result).then(mapOptionalTweet);
 }
 
 export async function remove(id){

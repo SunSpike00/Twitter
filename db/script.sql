@@ -17,5 +17,7 @@ create table tweets (
 	foreign key(userId) references users(id)
 );
 
+SET foreign_key_checks = 1;
+
 select * from tweets;
 select * from users;
