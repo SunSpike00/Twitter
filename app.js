@@ -20,7 +20,7 @@ app.use('/auth', authRouter);
 // });
 
 connectionDB().then((db) => {
-    console.log('연결 성공');
+    console.log('몽구스를 이용하여 몽고디비에 접속 성공!');
     app.listen(config.host.port);
 }).catch(console.error);
 
